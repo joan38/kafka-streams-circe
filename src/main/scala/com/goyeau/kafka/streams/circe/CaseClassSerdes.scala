@@ -1,20 +1,27 @@
 package com.goyeau.kafka.streams.circe
 
-import com.lightbend.kafka.scala.streams.StatelessScalaSerde
+import java.util
+
 import io.circe.{Decoder, Encoder}
 import io.circe.parser._
-import org.apache.kafka.common.serialization.Serde
+import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Serializer}
 
 object CaseClassSerdes {
 
   implicit def caseClassSerde[CC >: Null: Encoder: Decoder]: Serde[CC] =
-    new StatelessScalaSerde[CC] {
-      override def serialize(caseClass: CC): Array[Byte] =
-        implicitly[Encoder[CC]].apply(caseClass).noSpaces.getBytes
+    Serdes.serdeFrom(
+      new Serializer[CC] {
+        override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
+        override def serialize(topic: String, caseClass: CC): Array[Byte] =
+          implicitly[Encoder[CC]].apply(caseClass).noSpaces.getBytes
+        override def close(): Unit = ()
+      },
+      new Deserializer[CC] {
+        override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
+        override def deserialize(topic: String, data: Array[Byte]): CC =
+          parse(new String(data)).flatMap(implicitly[Decoder[CC]].decodeJson(_)).toOption.orNull
+        override def close(): Unit = ()
 
-      override def deserialize(caseClass: Array[Byte]): Option[CC] =
-        parse(new String(caseClass))
-          .flatMap(implicitly[Decoder[CC]].decodeJson(_))
-          .toOption
-    }
+      }
+    )
 }

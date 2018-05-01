@@ -15,7 +15,7 @@ scalacOptions ++= Seq(
   "-Ypartial-unification",
   "-Ywarn-dead-code"
 )
-libraryDependencies ++= kafkaStreamsScala ++ circe
+libraryDependencies ++= circe ++ kafkaStreams
 
 licenses += "APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0")
 homepage := Option(url("https://github.com/joan38/kubernetes-client"))
@@ -32,7 +32,7 @@ publishTo := Option(
   else Opts.resolver.sonatypeStaging
 )
 
-lazy val kafkaStreamsScala = Seq("com.lightbend" %% "kafka-streams-scala" % "0.2.1")
+lazy val kafkaStreams = Seq("org.apache.kafka" % "kafka-streams" % "1.0.0")
 
 lazy val circe = {
   val version = "0.9.3"
