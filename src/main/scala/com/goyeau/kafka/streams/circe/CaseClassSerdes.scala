@@ -4,6 +4,7 @@ import java.util
 
 import io.circe.{Decoder, Encoder}
 import io.circe.parser._
+import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Serializer}
 
 object CaseClassSerdes {
@@ -19,9 +20,8 @@ object CaseClassSerdes {
       new Deserializer[CC] {
         override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
         override def deserialize(topic: String, data: Array[Byte]): CC =
-          parse(new String(data)).flatMap(implicitly[Decoder[CC]].decodeJson(_)).toOption.orNull
+          decode[CC](new String(data)).fold(error => throw new SerializationException(error), identity)
         override def close(): Unit = ()
-
       }
     )
 }
