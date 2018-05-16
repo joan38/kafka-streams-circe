@@ -18,11 +18,11 @@ scalacOptions ++= Seq(
 libraryDependencies ++= circe ++ kafkaStreams
 
 licenses += "APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0")
-homepage := Option(url("https://github.com/joan38/kubernetes-client"))
+homepage := Option(url("https://github.com/joan38/kafka-streams-circe"))
 scmInfo := Option(
   ScmInfo(
-    url("https://github.com/joan38/kubernetes-client"),
-    "https://github.com/joan38/kubernetes-client.git"
+    url("https://github.com/joan38/kafka-streams-circe"),
+    "https://github.com/joan38/kafka-streams-circe.git"
   )
 )
 developers += Developer(id = "joan38", name = "Joan Goyeau", email = "joan@goyeau.com", url = url("http://goyeau.com")
