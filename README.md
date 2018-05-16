@@ -17,7 +17,7 @@ libraryDependencies += "com.goyeau" %% "kafka-streams-circe" % "<latest version>
 import com.lightbend.kafka.scala.streams.DefaultSerdes._
 import com.lightbend.kafka.scala.streams.ImplicitConversions._
 import com.lightbend.kafka.scala.streams.StreamsBuilderS
-import com.goyeau.kafka.streams.circe.CaseClassSerdes._
+import com.goyeau.kafka.streams.circe.CirceSerdes._
 import io.circe.generic.auto._
 
 case class Person(firstname: String, lastname: String, age: Int)
