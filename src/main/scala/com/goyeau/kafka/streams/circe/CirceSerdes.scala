@@ -9,7 +9,7 @@ import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Seria
 
 object CirceSerdes {
 
-  implicit def serializer[CC >: Null: Encoder]: Serializer[CC] =
+  implicit def serializer[CC: Encoder]: Serializer[CC] =
       new Serializer[CC] {
         override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
         override def serialize(topic: String, caseClass: CC): Array[Byte] =
@@ -17,7 +17,7 @@ object CirceSerdes {
         override def close(): Unit = ()
       }
 
-  implicit def deserializer[CC >: Null: Decoder]: Deserializer[CC] =
+  implicit def deserializer[CC: Decoder]: Deserializer[CC] =
     new Deserializer[CC] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
       override def deserialize(topic: String, data: Array[Byte]): CC =
@@ -25,6 +25,5 @@ object CirceSerdes {
       override def close(): Unit = ()
     }
 
-  implicit def serde[CC >: Null: Encoder: Decoder]: Serde[CC] =
-    Serdes.serdeFrom(serializer, deserializer)
+  implicit def serde[CC: Encoder: Decoder]: Serde[CC] = Serdes.serdeFrom(serializer, deserializer)
 }

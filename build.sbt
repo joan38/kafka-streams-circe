@@ -1,7 +1,7 @@
 name := "Kafka Streams Circe"
 organization := "com.goyeau"
 scalaVersion := "2.12.4"
-dynverSonatypeSnapshots := true
+ThisBuild / dynverSonatypeSnapshots := true
 scalacOptions ++= Seq(
   "-deprecation",
   "-feature",
@@ -25,8 +25,7 @@ scmInfo := Option(
     "https://github.com/joan38/kafka-streams-circe.git"
   )
 )
-developers += Developer(id = "joan38", name = "Joan Goyeau", email = "joan@goyeau.com", url = url("http://goyeau.com")
-)
+developers += Developer(id = "joan38", name = "Joan Goyeau", email = "joan@goyeau.com", url = url("http://goyeau.com"))
 publishTo := Option(
   if (isSnapshot.value) Opts.resolver.sonatypeSnapshots
   else Opts.resolver.sonatypeStaging
