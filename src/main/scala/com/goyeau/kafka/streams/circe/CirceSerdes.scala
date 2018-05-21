@@ -9,19 +9,21 @@ import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Seria
 
 object CirceSerdes {
 
-  implicit def serializer[CC: Encoder]: Serializer[CC] =
-      new Serializer[CC] {
+  implicit def serializer[T: Encoder]: Serializer[T] =
+      new Serializer[T] {
         override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
-        override def serialize(topic: String, caseClass: CC): Array[Byte] =
-          implicitly[Encoder[CC]].apply(caseClass).noSpaces.getBytes
+        override def serialize(topic: String, caseClass: T): Array[Byte] =
+          implicitly[Encoder[T]].apply(caseClass).noSpaces.getBytes
         override def close(): Unit = ()
       }
 
-  implicit def deserializer[CC: Decoder]: Deserializer[CC] =
-    new Deserializer[CC] {
+  implicit def deserializer[T: Decoder]: Deserializer[T] =
+    new Deserializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
-      override def deserialize(topic: String, data: Array[Byte]): CC =
-        decode[CC](new String(data)).fold(error => throw new SerializationException(error), identity)
+      override def deserialize(topic: String, data: Array[Byte]): T =
+        Option(data).fold(null.asInstanceOf[T]) { data =>
+          decode[T](new String(data)).fold(error => throw new SerializationException(error), identity)
+        }
       override def close(): Unit = ()
     }
 
