@@ -13,7 +13,7 @@ object CirceSerdes {
       new Serializer[T] {
         override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
         override def serialize(topic: String, caseClass: T): Array[Byte] =
-          implicitly[Encoder[T]].apply(caseClass).noSpaces.getBytes
+          Option(caseClass).map(implicitly[Encoder[T]].apply(_).noSpaces.getBytes).orNull
         override def close(): Unit = ()
       }
 
