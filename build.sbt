@@ -1,20 +1,9 @@
 name := "Kafka Streams Circe"
 organization := "com.goyeau"
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.10"
+
 ThisBuild / dynverSonatypeSnapshots := true
-scalacOptions ++= Seq(
-  "-deprecation",
-  "-feature",
-  "-Xlint:unsound-match",
-  "-Ywarn-inaccessible",
-  "-Ywarn-infer-any",
-  "-Ywarn-unused:imports",
-  "-Ywarn-unused:locals",
-  "-Ywarn-unused:patvars",
-  "-Ywarn-unused:privates",
-  "-Ypartial-unification",
-  "-Ywarn-dead-code"
-)
+
 libraryDependencies ++= circe ++ kafkaStreams
 
 licenses += "APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0")
@@ -31,10 +20,10 @@ publishTo := Option(
   else Opts.resolver.sonatypeStaging
 )
 
-lazy val kafkaStreams = Seq("org.apache.kafka" % "kafka-streams" % "1.0.0")
+lazy val kafkaStreams = Seq("org.apache.kafka" %% "kafka-streams-scala" % "2.3.1")
 
 lazy val circe = {
-  val version = "0.9.3"
+  val version = "0.12.3"
   Seq(
     "io.circe" %% "circe-core" % version,
     "io.circe" %% "circe-parser" % version,
