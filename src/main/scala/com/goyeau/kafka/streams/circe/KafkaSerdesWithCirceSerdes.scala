@@ -10,10 +10,10 @@ import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Seria
 trait CirceSerdes {
   import io.circe.syntax._
 
-  implicit def serializer[T: Encoder]: Serializer[T] =
+  implicit final def serializer[T: Encoder]: Serializer[T] =
     (_, t: T) => t.asJson.noSpaces.getBytes(StandardCharsets.UTF_8)
 
-  implicit def deserializer[T: Decoder]: Deserializer[T] =
+  implicit final def deserializer[T: Decoder]: Deserializer[T] =
     (_, data: Array[Byte]) =>
       if (data eq null) null.asInstanceOf[T]
       else {
@@ -21,7 +21,7 @@ trait CirceSerdes {
           .fold(error => throw new SerializationException(error), identity)
     }
 
-  implicit def serde[CC: Encoder: Decoder]: Serde[CC] = Serdes.serdeFrom(serializer, deserializer)
+  implicit final def serde[CC: Encoder: Decoder]: Serde[CC] = Serdes.serdeFrom(serializer, deserializer)
 }
 
 object KafkaSerdesWithCirceSerdes extends Serdes with CirceSerdes
