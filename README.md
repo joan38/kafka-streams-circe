@@ -17,8 +17,8 @@ libraryDependencies += "com.goyeau" %% "kafka-streams-circe" % "<latest version>
 import org.apache.kafka.streams.scala.StreamsBuilder
 
 import org.apache.kafka.streams.scala.ImplicitConversions._
-import org.apache.kafka.streams.scala.Serdes._
-import com.goyeau.kafka.streams.circe.CirceSerdes._
+// import org.apache.kafka.streams.scala.Serdes._  // Not Required anymore. It will be imported with the import of this lib.
+import com.goyeau.kafka.streams.circe.KafkaSerdesWithCirceSerdes._
 import io.circe.generic.auto._
 
 case class Person(firstname: String, lastname: String, age: Int)
