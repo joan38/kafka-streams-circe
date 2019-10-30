@@ -14,9 +14,10 @@ libraryDependencies += "com.goyeau" %% "kafka-streams-circe" % "<latest version>
 ## Example
 
 ```scala
-import com.lightbend.kafka.scala.streams.DefaultSerdes._
-import com.lightbend.kafka.scala.streams.ImplicitConversions._
-import com.lightbend.kafka.scala.streams.StreamsBuilderS
+import org.apache.kafka.streams.scala.StreamsBuilder
+
+import org.apache.kafka.streams.scala.ImplicitConversions._
+import org.apache.kafka.streams.scala.Serdes._
 import com.goyeau.kafka.streams.circe.CirceSerdes._
 import io.circe.generic.auto._
 
@@ -25,7 +26,7 @@ case class Person(firstname: String, lastname: String, age: Int)
 object Streams extends App {
   println("Starting streams")
 
-  val streamsBuilder = new StreamsBuilderS()
+  val streamsBuilder = new StreamsBuilder
   val testStream = streamsBuilder.stream[String, Person]("some-topic")
 }
 ```
