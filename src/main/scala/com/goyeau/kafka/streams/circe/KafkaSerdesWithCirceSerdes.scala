@@ -16,10 +16,9 @@ trait CirceSerdes {
   implicit final def deserializer[T: Decoder]: Deserializer[T] =
     (_, data: Array[Byte]) =>
       if (data eq null) null.asInstanceOf[T]
-      else {
+      else
         decode[T](new String(data, StandardCharsets.UTF_8))
           .fold(error => throw new SerializationException(error), identity)
-    }
 
   implicit final def serde[CC: Encoder: Decoder]: Serde[CC] = Serdes.serdeFrom(serializer, deserializer)
 }
