@@ -28,7 +28,7 @@ publishTo := sonatypePublishToBundle.value
 lazy val kafkaStreams = Seq("org.apache.kafka" %% "kafka-streams-scala" % "2.4.0")
 
 lazy val circe = {
-  val version = "0.12.3"
+  val version = "0.13.0"
   Seq(
     "io.circe" %% "circe-core"    % version,
     "io.circe" %% "circe-parser"  % version,
