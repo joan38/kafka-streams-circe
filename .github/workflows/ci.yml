@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  create:
+    tags:
+      - v*
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Pull all history with tags for correct versionning
+        run: git fetch --prune --unshallow
+      - name: Checks
+        run: |
+          git config --global user.name "CI"
+          ./mill all __.checkFormat "__.fix --check" __.docJar __.test
+      - name: Publish
+        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
+        run: |
+          echo "${{secrets.pgp_secret_key}}" > private.key
+          gpg --batch --yes --import private.key
+          rm private.key
+
+          ./mill mill.scalalib.PublishModule/publishAll --sonatypeCreds ${{secrets.sonatype_credentials}} --publishArtifacts __.publishArtifacts --readTimeout 600000 --release true

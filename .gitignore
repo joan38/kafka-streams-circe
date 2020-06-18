@@ -11,3 +11,6 @@
 *.iml
 bin
 target
+out
+.bsp
+.bloop

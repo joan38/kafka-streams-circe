@@ -5,9 +5,15 @@
 Generic Serdes with [Circe](https://github.com/circe/circe) for [Kafka Streams](https://github.com/apache/kafka)
 
 ## Installation
-
+[Mill](https://www.lihaoyi.com/mill):
 ```scala
-libraryDependencies += "com.goyeau" %% "kafka-streams-circe" % "<latest version>"
+ivy"com.goyeau::kafka-streams-circe:<latest version>"
+```
+or
+
+[SBT](https://www.scala-sbt.org):
+```scala
+"com.goyeau" %% "kafka-streams-circe" % "<latest version>"
 ```
 
 
