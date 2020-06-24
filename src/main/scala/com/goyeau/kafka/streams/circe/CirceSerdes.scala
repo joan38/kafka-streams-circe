@@ -8,13 +8,28 @@ import io.circe.{Decoder, Encoder}
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serdes, Serializer}
 
-object CirceSerdes {
+/**
+ * By default json is serialized using Printer.noSpaces.
+ *
+ * If you want to custom serialization, instead of import CirceSerdes you could write something like:
+ *
+ * <pre>
+ * val serdes = CirceSerdes(Printer(
+ *  dropNullValues = true,
+ *  indent = ""
+ * ))
+ * import serdes._
+ * </pre>
+ *
+ * @param printer
+ */
+class CirceSerdes(printer: Printer) {
 
   implicit def serializer[T: Encoder]: Serializer[T] =
     new Serializer[T] {
       override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
       override def serialize(topic: String, caseClass: T): Array[Byte] =
-        Encoder[T].apply(caseClass).noSpaces.getBytes(StandardCharsets.UTF_8)
+        printer.print(Encoder[T].apply(caseClass)).getBytes(StandardCharsets.UTF_8)
       override def close(): Unit = ()
     }
 
@@ -30,4 +45,8 @@ object CirceSerdes {
     }
 
   implicit def serde[CC: Encoder: Decoder]: Serde[CC] = Serdes.serdeFrom(serializer, deserializer)
+}
+
+object CirceSerdes extends CirceSerdes(Printer.noSpaces) {
+  def apply(printer: Printer) = new CirceSerdes(printer)
 }

@@ -36,3 +36,31 @@ object Streams extends App {
   val testStream = streamsBuilder.stream[String, Person]("some-topic")
 }
 ```
+
+If you need to customize the json serialization, a instance of CirceSerdes
+can be imported with a custom printer.
+
+For example, in the code below a custom printer is used to omit null values
+```scala
+import org.apache.kafka.streams.scala.StreamsBuilder
+
+import org.apache.kafka.streams.scala.ImplicitConversions._
+import org.apache.kafka.streams.scala.Serdes._
+import com.goyeau.kafka.streams.circe.CirceSerdes._
+import io.circe.generic.auto._
+
+case class Person(firstname: String, lastname: String, age: Int)
+
+object Streams extends App {
+  println("Starting streams")
+  val serdes = CirceSerdes(Printer(
+   dropNullValues = true,
+   indent = ""
+  ))
+  import serdes._
+
+  val streamsBuilder = new StreamsBuilder
+  val testStream = streamsBuilder.stream[String, Person]("some-topic")
+}
+```
+
