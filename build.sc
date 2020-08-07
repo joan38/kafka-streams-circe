@@ -1,7 +1,7 @@
 import $ivy.`com.goyeau::mill-git:0.1.1`
-import $ivy.`com.goyeau::mill-scalafix:0.1.3`
+import $ivy.`com.goyeau::mill-scalafix:0.1.4`
 import $ivy.`com.lihaoyi::mill-contrib-bsp:$MILL_VERSION`
-import $ivy.`io.github.davidgregory084::mill-tpolecat:0.1.3`
+import $ivy.`io.github.davidgregory084::mill-tpolecat:0.1.4`
 import $file.project.Dependencies, Dependencies.Dependencies._
 import com.goyeau.mill.git.GitVersionedPublishModule
 import com.goyeau.mill.scalafix.StyleModule
@@ -19,9 +19,9 @@ class KubernetesClientModule(val crossScalaVersion: String)
   override def ivyDeps = super.ivyDeps() ++ circe ++ kafkaStreams
 
   object test extends Tests {
-    def testFrameworks    = Seq("org.scalatest.tools.Framework")
+    def testFrameworks    = Seq("munit.Framework")
     override def forkArgs = super.forkArgs() :+ "-Djdk.tls.client.protocols=TLSv1.2"
-    override def ivyDeps  = super.ivyDeps() ++ Agg(ivy"org.scalatest::scalatest:3.2.0")
+    override def ivyDeps  = super.ivyDeps() ++ Agg(ivy"org.scalameta::munit:0.7.10")
   }
 
   override def artifactName = "kafka-streams-circe"
