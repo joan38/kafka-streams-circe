@@ -21,7 +21,7 @@ class KubernetesClientModule(val crossScalaVersion: String)
   object test extends Tests {
     def testFrameworks    = Seq("munit.Framework")
     override def forkArgs = super.forkArgs() :+ "-Djdk.tls.client.protocols=TLSv1.2"
-    override def ivyDeps  = super.ivyDeps() ++ Agg(ivy"org.scalameta::munit:0.7.12")
+    override def ivyDeps  = super.ivyDeps() ++ Agg(ivy"org.scalameta::munit:0.7.13")
   }
 
   override def artifactName = "kafka-streams-circe"
