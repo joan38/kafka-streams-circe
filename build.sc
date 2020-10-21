@@ -24,7 +24,7 @@ class KubernetesClientModule(val crossScalaVersion: String)
     override def ivyDeps  = super.ivyDeps() ++ Agg(ivy"org.scalameta::munit:0.7.14")
   }
 
-  def publishVersion = GitVersionModule.version(withSnapshotSuffix = true)
+  override def publishVersion = GitVersionModule.version(withSnapshotSuffix = true)
   def pomSettings =
     PomSettings(
       description = "Generic Serdes with Circe for Kafka Streams",
