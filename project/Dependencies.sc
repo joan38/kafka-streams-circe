@@ -11,5 +11,5 @@ object Dependencies {
     )
   }
 
-  lazy val kafkaStreams = Agg(ivy"org.apache.kafka::kafka-streams-scala:3.2.0")
+  lazy val kafkaStreams = Agg(ivy"org.apache.kafka::kafka-streams-scala:3.1.0")
 }
